@@ -9,13 +9,24 @@ import SwiftUI
 
 @main
 struct The_WindowApp: App {
+    
     var body: some Scene {
+        
+        @ObservedObject var router = Router()
+        
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $router.navPath) {
+                LandingPage()
+                    .navigationDestination(for: Router.Destination.self) { destination in
+                        switch destination{
+                        case .homescreen:
+                            HomeScreen()
+                        }
+                    }
+            }
+            .environmentObject(router)
+            
         }
-
-        ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
-        }
+        .windowStyle(.plain)
     }
 }
